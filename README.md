@@ -2,9 +2,9 @@
 
 
 ## Table of contents
-* [General info] (# general-info)
-* [Technologies] (# technologies)
-* [Setup] (# setup)
+* General info 
+* Technologies 
+* Setup 
 
 ## General info
 This project focuses on research reproducibality. We selected one of the published research papers i.e "Human Development and its Effects on Economic Growth". 
