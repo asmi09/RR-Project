@@ -7,8 +7,7 @@
 * Setup 
 
 ## General info
-This project focuses on research reproducibality. We selected one of the published research papers i.e "Human Development and its Effects on Economic Growth". 
-We identified few shortcomings and replicated the same study on another data set and presented our results. In the end we performed model diagnostics and proposed conclusions.
+This project focuses on research reproducibality. We selected one of the published research papers i.e "Relationship between Human Development Index and Socio-Economic Variables.We identified few shortcomings and replicated the same study on another data set and presented our results. In the end we performed model diagnostics and proposed conclusions.
 
 ## Technologies
 R Studio 4.1.3
