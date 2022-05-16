@@ -25,6 +25,27 @@ This project deals in "Human Development and is Effects on Economic Growth". The
 ## Part I Reproducibility
 
 This part of project contains results of original study. We tried to produce original results. However we confronted with some issues in producing original results. They are discussed below step by step.
+Lets first load required libraries and then data set
 
+```{r}
+library(tidyverse)
+library("readxl")
+library("lmtest")
+library("MASS")
+library("sandwich")
+library("zoo")
+library("car")
+library("lmtest")
+library("Formula")
+library("plm")
+library("stargazer")
+library("aod")
+```
+
+
+```{r}
+data <- read_excel("data.xlsx") #loading the required data set
+head(data) # looking at the first 5 observations
+```
 
 
