@@ -1,0 +1,30 @@
+---
+title: "Reproducible Research Project"
+author: "Elbrus Gasimov, Gunneet Singh & Muhammad Usman"
+date: "5/14/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+# Introduction
+
+This project composed of two sections First, deals in producing original results of study and second we will replicate same approach on another data set with some improvements which have been explained in the second section.
+
+### Topic and Data details
+
+This project deals in "Human Development and is Effects on Economic Growth". The data set and variables used in this study spread over from 1990-2015 and includes only 5 African countries which are Kenya, Tanzania, Rwanda, Ghana and Cote d'Voire. Variables used in this study are:  GDP is the dependent variable, Human Development Index (HDI) measured in percentage as the variable of interest with Inflation (INF) proxied as Consumer price index measured in percentage, Capital (CAP) proxied as Government Capital formation measured in % of GDP, Aid (AID) proxied as official development assistant measured in current USD, Investment (INV) proxied as foreign direct investment measured as (% of GDP) and Labour (LAB) as control variables.Data was retrieved from world bank and world development indicators.
+
+
+
+## Part I Reproducibility
+
+This part of project contains results of original study. We tried to produce original results. However we confronted with some issues in producing original results. They are discussed below step by step.
+
+
+
