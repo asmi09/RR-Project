@@ -9,6 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+setwd("C:\\Users\\muhammad usman\\Desktop\\RR\\RR-Project")
+```
 
 
 
@@ -46,6 +49,38 @@ library("aod")
 ```{r}
 data <- read_excel("data.xlsx") #loading the required data set
 head(data) # looking at the first 5 observations
+```
+First they took log transformations to have more normally distributed data of the following variables and then applied panel models (random and fixed effects).
+
+
+```{r}
+#visualizing distributions of not normally distrbiuted features and taking log transformations
+par(mfrow=c(2,3))
+hist(data$INV)
+hist(data$GDP)
+hist(data$AID)
+hist(data$LAB)
+
+#log transformations 
+data$INV<-log(data$INV)
+data$GDP<-log(data$GDP)
+data$AID<-log(data$AID)
+data$LAB<-log(data$LAB)
+
+#after log transformations more normally distributed data 
+par(mfrow=c(2,3))
+hist(data$INV)
+hist(data$GDP)
+hist(data$AID)
+hist(data$LAB)
+```
+
+```{r}
+# Estimating fixed effects model
+fixed <- plm(GDP~INV+GCF+INF+AID+LAB+HDI,
+            data=data, index=c("Country", "Year"), model="within")
+summary(fixed)
+
 ```
 
 
