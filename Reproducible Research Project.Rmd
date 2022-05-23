@@ -13,22 +13,17 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("C:\\Users\\muhammad usman\\Desktop\\RR\\RR-Project")
 ```
 
-
-
 # Introduction
 
 This project composed of two sections First, deals in producing original results of study and second we will replicate same approach on another data set with some improvements which have been explained in the second section.
 
 ### Topic and Data details
 
-This project deals in "Human Development and is Effects on Economic Growth". The data set and variables used in this study spread over from 1990-2015 and includes only 5 African countries which are Kenya, Tanzania, Rwanda, Ghana and Cote d'Voire. Variables used in this study are:  GDP is the dependent variable, Human Development Index (HDI) measured in percentage as the variable of interest with Inflation (INF) proxied as Consumer price index measured in percentage, Capital (CAP) proxied as Government Capital formation measured in % of GDP, Aid (AID) proxied as official development assistant measured in current USD, Investment (INV) proxied as foreign direct investment measured as (% of GDP) and Labour (LAB) as control variables.Data was retrieved from world bank and world development indicators.
-
-
+This project deals in "Human Development and is Effects on Economic Growth". The data set and variables used in this study spread over from 1990-2015 and includes only 5 African countries which are Kenya, Tanzania, Rwanda, Ghana and Cote d'Voire. Variables used in this study are: GDP is the dependent variable, Human Development Index (HDI) measured in percentage as the variable of interest with Inflation (INF) proxied as Consumer price index measured in percentage, Capital (CAP) proxied as Government Capital formation measured in % of GDP, Aid (AID) proxied as official development assistant measured in current USD, Investment (INV) proxied as foreign direct investment measured as (% of GDP) and Labour (LAB) as control variables.Data was retrieved from world bank and world development indicators.
 
 ## Part I Reproducibility
 
-This part of project contains results of original study. We tried to produce original results. However we confronted with some issues in producing original results. They are discussed below step by step.
-Lets first load required libraries and then data set
+This part of project contains results of original study. We tried to produce original results. However we confronted with some issues in producing original results. They are discussed below step by step. Lets first load required libraries and then data set
 
 ```{r}
 library(tidyverse)
@@ -45,13 +40,12 @@ library("stargazer")
 library("aod")
 ```
 
-
 ```{r}
 data <- read_excel("data.xlsx") #loading the required data set
 head(data) # looking at the first 5 observations
 ```
-First they took log transformations to have more normally distributed data of the following variables and then applied panel models (random and fixed effects).
 
+First they took log transformations to have more normally distributed data of the following variables and then applied panel models (random and fixed effects).
 
 ```{r}
 #visualizing distributions of not normally distrbiuted features and taking log transformations
@@ -82,5 +76,96 @@ fixed <- plm(GDP~INV+GCF+INF+AID+LAB+HDI,
 summary(fixed)
 
 ```
+
+We found some contrasting results in regards to original results. Variables INF, AID, LAB are significant but HDI is insignificant in our case. However, in original results all variables are significant. Furthermore, coefficients also vary in comparison to original results. Lets apply random fixed effects and see if we are able to reproduce original results.
+
+```{r}
+# Random effects model
+
+random <-plm(GDP~INV+GCF+INF+AID+LAB+HDI, data=data, 
+             index=c("Country", "Year"), model="random")
+summary(random)
+```
+
+Random model throws an error that 7 coefficients to be estimated but only 5 individuals means only 5 countries. For random effects model to be estimated we must have N \> T which means number of countries must be greater than number of years. As we cannot reproduce original results due to less number of countries as observations then time period, we would like to replicate the same study but keeping in view the requirements of panel models.
+
+## Part II Replicability
+
+We will now replicate the same study but on different data set and keeping in mind all the steps that are involved in performing panel models(Random and Fixed Effects). After loading the data following are the complete set of steps that we would like to perform:
+
+1.  Checking distributions of features and taking log transformations if required
+
+2.  Fixed effects model
+
+3.  Random effects model
+
+4.  Ols model
+
+5.  Test for the selection of best model among the above mentioned
+
+6.  Test for time and cross sectional effects
+
+7.  General to specific approach to identify the significant variables
+
+8.  Diagnostic tests for serial correlation and heteroskedasticity
+
+9.  Variance-Covariance method to control both heteroskedasticity and autocorrelation
+
+10. Conclusions
+
+lets first load the data set
+
+```{r}
+my_data <- read.csv("rep_data.csv")# loading csv file
+head(my_data) # checking first 5 observations
+```
+Our data set consist of same features but spreads over from 2006 to 2016 and for total number of 14 countries. Before checking the distributions of our variables lets firts check for missing values.
+
+```{r}
+# Checking if any of the variables has NA's using sapply function
+sapply(my_data, function(x) sum(is.na(x)))
+```
+
+We have no missing values so lets visualize distributions.
+```{r}
+par(mfrow=c(3,3)) #allows us to create a matrix of plots
+par(mar=c(2,2,1,1))
+hist(my_data$GDP)
+hist(my_data$GCF)
+hist(my_data$INF)
+hist(my_data$INV)
+hist(my_data$AID)
+hist(my_data$HDI)
+hist(my_data$LAB)
+```
+
+Apart from GCF and HDI all other distributions are either right skewed or left skewed. Lets take log transformations and see if it helps our cause. 
+
+```{r}
+#we have small values in our data set and if we perform log transformations we get negative values
+#to avoid this we add positive absolute value to few of the features 
+my_data$GDP<-log(my_data$GDP)
+my_data$INV<-log(my_data$INV+5)
+my_data$INF<-log(my_data$INF+15)
+my_data$LAB<-log(my_data$LAB)
+my_data$AID<-log(my_data$AID)
+```
+
+lets now check our distributions after taking log transformations.
+```{r}
+#visualizing log transformed features 
+par(mfrow=c(3,3))
+par(mar=c(2,2,1,1))
+hist(my_data$GDP)
+hist(my_data$GCF)
+hist(my_data$INF)
+hist(my_data$INV)
+hist(my_data$AID)
+hist(my_data$HDI)
+hist(my_data$LAB)
+```
+The above graphs show that log transformation does help as now data looks in better shape then without log transformation. The next step is to perform panel modeling.
+
+
 
 
