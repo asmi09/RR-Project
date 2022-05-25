@@ -15,17 +15,17 @@ setwd("C:\\Users\\muhammad usman\\Desktop\\RR\\RR-Project")
 
 # Introduction
 
-This project composed of two sections First, deals in producing original results of study and second we will replicate same approach on another data set with some improvements which have been explained in the second section.
+This project is composed of two sections. First, it deals in reproducing original results of the study and second we will replicate same approach on another data set with some improvements which have been explained in the second section.
 
-### Topic and Data details
+### Topic and Data description
 
-This project deals in "Human Development and is Effects on Economic Growth". The data set and variables used in this study spread over from 1990-2015 and includes only 5 African countries which are Kenya, Tanzania, Rwanda, Ghana and Cote d'Voire. Variables used in this study are: GDP is the dependent variable, Human Development Index (HDI) measured in percentage as the variable of interest with Inflation (INF) proxied as Consumer price index measured in percentage, Capital (CAP) proxied as Government Capital formation measured in % of GDP, Aid (AID) proxied as official development assistant measured in current USD, Investment (INV) proxied as foreign direct investment measured as (% of GDP) and Labour (LAB) as control variables.Data was retrieved from world bank and world development indicators.
+This project deals in "Human Development and its effects on Economic Growth". The data set and variables used in this study spread over from 1990-2015 and includes only 5 African countries which are Kenya, Tanzania, Rwanda, Ghana and Cote d'Voire. Variables used in this study are: GDP is the dependent variable, Human Development Index (HDI) measured in percentage as the variable of interest with Inflation (INF) proxied as Consumer price index measured in percentage, Capital (CAP) proxied as Government Capital formation measured in % of GDP, Aid (AID) proxied as official development assistant measured in current USD, Investment (INV) proxied as foreign direct investment measured as (% of GDP) and Labour (LAB) as control variables. Data was retrieved from world bank and world development indicators (WDI) repositories.
 
 ## Part I Reproducibility
 
 This part of project contains results of original study. We tried to produce original results. However we confronted with some issues in producing original results. They are discussed below step by step. Lets first load required libraries and then data set
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library("readxl")
 library("lmtest")
@@ -45,10 +45,10 @@ data <- read_excel("data.xlsx") #loading the required data set
 head(data) # looking at the first 5 observations
 ```
 
-First they took log transformations to have more normally distributed data of the following variables and then applied panel models (random and fixed effects).
+Firstly, the original study took log transformations to have more normally distributed data of the following variables and then applied panel models (random and fixed effects).
 
 ```{r}
-#visualizing distributions of not normally distrbiuted features and taking log transformations
+#visualizing distributions of not normally distributed features and taking log transformations
 par(mfrow=c(2,3))
 hist(data$INV)
 hist(data$GDP)
@@ -87,7 +87,7 @@ random <-plm(GDP~INV+GCF+INF+AID+LAB+HDI, data=data,
 summary(random)
 ```
 
-Random model throws an error that 7 coefficients to be estimated but only 5 individuals means only 5 countries. For random effects model to be estimated we must have N \> T which means number of countries must be greater than number of years. As we cannot reproduce original results due to less number of countries as observations then time period, we would like to replicate the same study but keeping in view the requirements of panel models.
+Random model throws an error that 7 coefficients to be estimated but only 5 individuals means only 5 countries. For random effects model to be estimated, we must have N \> T which means number of countries must be greater than number of years. As we cannot reproduce original results due to less number of countries as observations than time period, we would like to replicate the same study but keeping in view the requirements of panel models.
 
 ## Part II Replicability
 
@@ -113,7 +113,7 @@ We will now replicate the same study but on different data set and keeping in mi
 
 10. Conclusions
 
-lets first load the data set
+Lets first load the data set
 
 ```{r}
 my_data <- read.csv("rep_data.csv")# loading csv file
@@ -167,5 +167,29 @@ hist(my_data$LAB)
 The above graphs show that log transformation does help as now data looks in better shape then without log transformation. The next step is to perform panel modeling.
 
 
+```{r}
+# Fixed effects model
+fixed <- plm(GDP~INV+INF+GCF+HDI+LAB+AID, 
+            data=my_data, index=c("Country", "Year"), model="within")
+summary(fixed)
+```
+
+
+```{r}
+# Creating random effects model
+
+random <-plm(GDP~INV+INF+GCF+HDI+LAB+AID, 
+            data=my_data, index=c("Country", "Year"), model="random")
+summary(random)
+```
+
+
+```{r}
+# Creating OLS model
+
+OLS <-plm(GDP~INV+INF+GCF+HDI+LAB+AID, 
+            data=my_data, index=c("Country", "Year"), model="pooling")
+summary(OLS)
+```
 
 
