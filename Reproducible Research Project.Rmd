@@ -218,11 +218,27 @@ pFtest(fixed, OLS)
 
 As the p-value is less than the 5% significance level, it means we reject the null hypothesis that all individual effects are insignificant. Clearly, it means Fixed effects model is better than an OLS model.
 
+Let us now finally check which one among fixed and random is the best model for our analysis using Hausman Specification test.
+
 
 ```{r}
+# Hausman Specification test
 
+phtest(fixed, random)
 ```
 
+As the p-value is very big in comparison with the 5% significance level, we fail to reject the null hypothesis of the Hausman test, which means the Random effects model is most suitable for the study.
+
+
+```{r}
+# Taking into consideration the time & crossectional effects
+
+random.time <- plm(GDP~INV+INF+GCF+HDI+LAB+AID, 
+            data=my_data, index=c("Country", "Year"), model="random", effect = "twoways")
+summary(random.time)
+```
+
+We will be considering this two way random effects model for further analysis.
 
 
 
