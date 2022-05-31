@@ -241,9 +241,36 @@ summary(random.time)
 We will be considering this two way random effects model for further analysis.
 
 
+```{r}
+# General-to-specific procedure
+
+# General model
+
+random1 <-plm(GDP~INV+INF+GCF+HDI+LAB+AID, 
+            data=my_data, index=c("Country", "Year"), model="random", effect = "twoways")
+summary(random1)
+```
+
+According to the results INV and AID are not statistically significant. The variable AID has the maximum pvalue of around 0.97
+
+```{r}
+# General model without AID
+
+random2 <-plm(GDP~INV+INF+GCF+HDI+LAB, 
+            data=my_data, index=c("Country", "Year"), model="random", effect = "twoways")
+summary(random2)
+```
 
 
+Now we are left with only one statistically insignificant variable which is INV, which has the pvalue around 0.32
 
+```{r}
+# General model without INV
 
+random3 <-plm(GDP~INF+GCF+HDI+LAB, 
+            data=my_data, index=c("Country", "Year"), model="random", effect = "twoways")
+summary(random3)
+```
 
+All of our variables are statistically significant at 5 percent level of significance.
 
