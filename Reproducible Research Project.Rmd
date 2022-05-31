@@ -274,3 +274,46 @@ summary(random3)
 
 All of our variables are statistically significant at 5 percent level of significance.
 
+```{r}
+# Performing some Diagnostic tests
+
+# Testing for serial correlation
+
+pbgtest(random3)
+```
+
+As per Breusch-Godfrey/Wooldridge test, the p value comes out to be almost 0, which means we reject our Null Hypothesis. This implies there exist serial correlation in idiosyncratic errors. 
+
+```{r}
+# Testing for heteroskedasticity
+
+bptest(random3, studentize=T)
+
+```
+
+
+According the studentized Breusch-Pagan test, there is no heteroscedasticity present in thee data, as our pvalue is way more than 5 percent level of significance.
+
+Clearly, the model has serial correlation but no heteroskedasticity.
+
+```{r}
+# Using Variance-Covariance method to control both heteroskedasticity and autocorrelation:
+
+coeftest(random3, vcov.=vcovHC(random3, method="white1", type="HC0", cluster="group"))
+
+```
+
+
+```{r}
+# Creating the Publication quality table
+
+stargazer(random1, random2, random3, title="Quality table", align=TRUE, type="text")
+```
+
+
+
+
+
+
+
+
