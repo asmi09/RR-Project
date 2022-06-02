@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r, include=FALSE}
 setwd("C:\\Users\\muhammad usman\\Desktop\\RR\\RR-Project")
 ```
 
@@ -79,6 +79,7 @@ summary(fixed)
 
 We found some contrasting results in regards to original results. Variables INF, AID, LAB are significant but HDI is insignificant in our case. However, in original results all variables are significant. Furthermore, coefficients also vary in comparison to original results. Lets apply random fixed effects and see if we are able to reproduce original results.
 
+
 ```{r}
 # Random effects model
 
@@ -86,6 +87,7 @@ random <-plm(GDP~INV+GCF+INF+AID+LAB+HDI, data=data,
              index=c("Country", "Year"), model="random")
 summary(random)
 ```
+
 
 Random model throws an error that 7 coefficients to be estimated but only 5 individuals means only 5 countries. For random effects model to be estimated, we must have N \> T which means number of countries must be greater than number of years. As we cannot reproduce original results due to less number of countries as observations than time period, we would like to replicate the same study but keeping in view the requirements of panel models.
 
@@ -311,9 +313,11 @@ stargazer(random1, random2, random3, title="Quality table", align=TRUE, type="te
 ```
 
 
+The above publication quality table shows results of all models. For our analysis, we choose model 3 as the most suitable one. Results of model 3 suggests that inflation (INF), Investment (INV), government capital formation and labour force possess a statistically significant relationship with economic growth. Except inflation all other features are positively associated with economic growth. 
 
+## Conclusions
 
-
+This project focuses on reproducability and replicability of selected research on new data set. For reproducability part we could not able to produce original results. We identified few reasons for non reproducability. First of all, starting with variable selection and transformations; the authors did not visualized and mention any transformations. As these models work best for normally distributed data. Second, to apply panel models (Random and fixed effects) one of the other criteria is to meet this condition; N > T (number of countries must be greater then number of years). Third, they neglected ordinary least square and considered only random and fixed effects. Furthermore, they did not test for time and cross sectional effects. Issues related to autocorrelation and heteroscedasiticy were also neglected. These above mentioned steps are vital in performing panel models. For our part we applied all those steps and these might be the reasons we found contrasting results to original results. 
 
 
 
